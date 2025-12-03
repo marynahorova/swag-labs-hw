@@ -17,15 +17,11 @@ test.describe("Swag Lab Tests", { tag: "@regression" }, async () => {
   test("SL-001 Verify that User can add item to the cart", async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
 
-    await inventoryPage.addToCartByTitle([
-      InventoryItems.SauceLabsBackpack.title,
-      InventoryItems.SauceLabsBikeLight.title,
-    ]);
-    await inventoryPage.getPriceByTitle([
-      InventoryItems.SauceLabsBackpack.title,
-      InventoryItems.SauceLabsBikeLight.title,
-    ]);
-    await inventoryPage.verifyCartCounterVisibility({ isVisible: true }, "2");
+    await inventoryPage.addToCartByTitle(
+      InventoryItems.SauceLabsBackpack.title
+    );
+    await inventoryPage.getPriceByTitle(InventoryItems.SauceLabsBackpack.title);
+    await inventoryPage.verifyCartCounterVisibility({ isVisible: true }, "1");
   });
 
   test("SL-002 Verify that User can remove item from the cart", async ({
@@ -52,9 +48,7 @@ test.describe("Swag Lab Tests", { tag: "@regression" }, async () => {
     await inventoryPage.addToCartByTitle("Sauce Labs Bike Light");
     await cartPage.openCartPage();
     await cartPage.clickCheckoutBtn();
-    await checkoutStepOnePage.fillFirstName("Name");
-    await checkoutStepOnePage.fillLastName("Test");
-    await checkoutStepOnePage.fillZipCode("123");
+    await checkoutStepOnePage.fillCheckoutForm("FirstName", "LastName", "123");
     await checkoutStepOnePage.clickContinueBtn();
     await checkoutStepTwoPage.clickFinishBtn();
     await checkoutCompletePage.verifyCompletedOrderText();

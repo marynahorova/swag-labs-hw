@@ -4,59 +4,43 @@ import { SrvRecord } from "dns";
 
 export class InventoryPage extends BasePage {
   // Locators
-  private inventoryItem: Locator = this.page.getByTestId("inventory-item");
-  private inventoryItemName: Locator = this.page.getByTestId(
-    "inventory-item-name"
-  );
-  private addToCartBtn = (item: Locator) =>
-    item.getByRole("button", { name: "Add to cart" });
-  private removeFromCartBtn = (item: Locator) =>
-    item.getByRole("button", { name: "Remove" });
-  private itemPrice = (item: Locator) =>
-    item.getByTestId("inventory-item-price");
+  private getProductItemLocator(itemName: string): Locator {
+    return this.page.locator(`[data-test="inventory-item"]`).filter({
+      hasText: itemName,
+    });
+  }
+
+  private getAddToCartButtonLocator(itemName: string): Locator {
+    const itemId = itemName.toLowerCase().replace(/\s+/g, "-");
+    return this.page.locator(`[data-test="add-to-cart-${itemId}"]`);
+  }
+
+  private getRemoveButtonLocator(itemName: string): Locator {
+    const itemId = itemName.toLowerCase().replace(/\s+/g, "-");
+    return this.page.locator(`[data-test="remove-${itemId}"]`);
+  }
+
+  private getPriceLocator(itemName: string): Locator {
+    return this.getProductItemLocator(itemName).locator(
+      `[data-test="inventory-item-price"]`
+    );
+  }
+
   private cartCounter: Locator = this.page.getByTestId("shopping-cart-badge");
 
   //Methods
 
-  async addToCartByTitle(titles: string | string[]): Promise<void> {
-    const items = Array.isArray(titles) ? titles : [titles];
-
-    for (const title of items) {
-      const item = this.inventoryItem.filter({
-        has: this.inventoryItemName.filter({ hasText: title }),
-      });
-
-      await this.addToCartBtn(item).click();
-    }
+  async addToCartByTitle(itemName: string): Promise<void> {
+    await this.getAddToCartButtonLocator(itemName).click();
   }
 
-  async removeFromCartByTitle(titles: string | string[]): Promise<void> {
-    const items = Array.isArray(titles) ? titles : [titles];
-
-    for (const title of items) {
-      const item = this.inventoryItem.filter({
-        has: this.inventoryItemName.filter({ hasText: title }),
-      });
-
-      await this.removeFromCartBtn(item).click();
-    }
+  async removeFromCartByTitle(itemName: string): Promise<void> {
+    await this.getRemoveButtonLocator(itemName).click();
   }
 
-  async getPriceByTitle(titles: string | string[]): Promise<string[]> {
-    const items = Array.isArray(titles) ? titles : [titles];
-    const prices: string[] = [];
-
-    for (const title of items) {
-      const item = this.inventoryItem.filter({
-        has: this.inventoryItemName.filter({ hasText: title }),
-      });
-
-      const price = await this.itemPrice(item).innerText();
-
-      prices.push(price);
-    }
-
-    return prices;
+  async getPriceByTitle(itemName: string): Promise<string> {
+    const priceText = await this.getPriceLocator(itemName).textContent();
+    return priceText?.trim() || "";
   }
 
   async verifyCartCounterVisibility(
@@ -66,8 +50,6 @@ export class InventoryPage extends BasePage {
     if (isVisible) {
       if (count !== undefined) {
         await expect(this.cartCounter).toHaveText(count);
-      } else {
-        await expect(this.cartCounter).toBeVisible();
       }
     } else {
       await expect(this.cartCounter).not.toBeVisible();

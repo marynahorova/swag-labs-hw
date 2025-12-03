@@ -21,6 +21,12 @@ export class CheckoutStepOnePage extends BasePage {
   async fillZipCode(zipCode: string) {
     await this.zipCodeInput.fill(zipCode);
   }
+
+  async fillCheckoutForm(firstName: string, lastName: string, zipCode: string) {
+    await this.fillFirstName(firstName);
+    await this.fillLastName(lastName);
+    await this.fillZipCode(zipCode);
+  }
   async clickContinueBtn() {
     await this.continueBtn.click();
   }
