@@ -1,6 +1,6 @@
 import test from "@playwright/test";
 import { LoginPage } from "../pages/loginPage";
-import { InventoryItems, user } from "../testData";
+import { InventoryItems, userData } from "../testData";
 import { InventoryPage } from "../pages/inventoryPage";
 import { CartPage } from "../pages/cartPage";
 import { CheckoutStepOnePage } from "../pages/checkoutStepOnePage";
@@ -12,7 +12,10 @@ test.describe("Swag Lab Tests", { tag: "@regression" }, async () => {
     const loginPage = new LoginPage(page);
 
     await loginPage.openLoginPage();
-    await loginPage.loginUser(user.username, user.password);
+    await loginPage.loginUser(
+      userData.standardUser.username,
+      userData.standardUser.password
+    );
   });
   test("SL-001 Verify that User can add item to the cart", async ({ page }) => {
     const inventoryPage = new InventoryPage(page);

@@ -1,6 +1,12 @@
-export const user = {
-  username: "standard_user",
-  password: "secret_sauce",
+export const userData = {
+  standardUser: { username: "standard_user", password: "secret_sauce" },
+  lockedOutUser: { username: "locked_out_user", password: "secret_sauce" },
+  sperformanceGlitchUser: {
+    username: "performance_glitch_user",
+    password: "secret_sauce",
+  },
+  errorUser: { username: "error_user", password: "secret_sauce" },
+  visualUser: { username: "visual_user", password: "secret_sauce" },
 };
 
 export const InventoryItems = {

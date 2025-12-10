@@ -9,23 +9,19 @@ export class InventoryPage extends BasePage {
       hasText: itemName,
     });
   }
-
   private getAddToCartButtonLocator(itemName: string): Locator {
     const itemId = itemName.toLowerCase().replace(/\s+/g, "-");
     return this.page.locator(`[data-test="add-to-cart-${itemId}"]`);
   }
-
   private getRemoveButtonLocator(itemName: string): Locator {
     const itemId = itemName.toLowerCase().replace(/\s+/g, "-");
     return this.page.locator(`[data-test="remove-${itemId}"]`);
   }
-
   private getPriceLocator(itemName: string): Locator {
     return this.getProductItemLocator(itemName).locator(
       `[data-test="inventory-item-price"]`
     );
   }
-
   private cartCounter: Locator = this.page.getByTestId("shopping-cart-badge");
 
   //Methods
