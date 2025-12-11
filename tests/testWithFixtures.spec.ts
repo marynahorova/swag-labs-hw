@@ -17,10 +17,8 @@ test.describe(
     });
 
     test("SL-001 Verify that User can add item to the cart (with fixture)", async ({
-      page,
+      inventoryPage,
     }) => {
-      const inventoryPage = new InventoryPage(page);
-
       await inventoryPage.addToCartByTitle(
         InventoryItems.SauceLabsBackpack.title
       );
@@ -31,10 +29,8 @@ test.describe(
     });
 
     test("SL-002 Verify that User can remove item from the cart (with fixture)", async ({
-      page,
+      inventoryPage,
     }) => {
-      const inventoryPage = new InventoryPage(page);
-
       await inventoryPage.addToCartByTitle(
         InventoryItems.SauceLabsBackpack.title
       );

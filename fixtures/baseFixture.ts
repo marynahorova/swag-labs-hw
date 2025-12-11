@@ -62,12 +62,4 @@ export const test = base.extend<MyFixture>({
     },
     { auto: true },
   ],
-
-  // after: [
-  //   async ({ inventoryPage }, use) => {
-  //     inventoryPage.logout();
-  //     await use();
-  //   },
-  //   { auto: true },
-  // ],
 });
